@@ -1,13 +1,8 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
-from .models import Category
+from .models import Category, Product
 
 
-def home(request):
-    categories = Category.objects.all()
-
-    context = {
-        'categories': categories
-    }
-
-    return render(request, 'main/home.html', context=context)
+class Home(TemplateView):
+    template_name = 'main/home.html'
