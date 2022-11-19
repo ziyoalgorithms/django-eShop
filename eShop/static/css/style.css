@@ -1335,6 +1335,12 @@ ol {
 	transform: rotate(360deg);
 }
 
+
+.product__item__pic__hover li:hover a svg {
+	color: #ffffff;
+	transform: rotate(360deg);
+}
+
 .product__item__pic__hover li a {
 	font-size: 16px;
 	color: #1c1c1c;
@@ -1354,6 +1360,17 @@ ol {
 }
 
 .product__item__pic__hover li a i {
+	position: relative;
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
+
+
+.product__item__pic__hover li a svg {
 	position: relative;
 	transform: rotate(0);
 	-webkit-transition: all, 0.3s;
