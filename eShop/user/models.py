@@ -30,8 +30,8 @@ class UserManager(BaseUserManager):
 
 class UserAcc(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    name = models.CharField(max_length=30)
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = UserManager()
@@ -62,7 +62,7 @@ class UserAccProfile(models.Model):
         ('AYOL', 'Ayol')
     )
 
-    COUNTY_CHOICES = (
+    COUNTRY_CHOICES = (
         ('SAMARQAND', 'Samarqand'),
         ('JIZZAH', 'Jizzah'),
         ('SURXONDARYO', 'Surxondaryo'),
@@ -87,7 +87,7 @@ class UserAccProfile(models.Model):
     last_name = models.CharField(max_length=30)
     phone = models.CharField(max_length=13)
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES)
-    country = models.CharField(max_length=12, choices=COUNTY_CHOICES)
+    country = models.CharField(max_length=12, choices=COUNTRY_CHOICES)
     address_line = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
