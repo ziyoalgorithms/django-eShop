@@ -31,6 +31,7 @@ class UserManager(BaseUserManager):
 class UserAcc(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=30)
+    phone = models.CharField(max_length=13, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -85,7 +86,6 @@ class UserAccProfile(models.Model):
     )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    phone = models.CharField(max_length=13)
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES)
     country = models.CharField(max_length=12, choices=COUNTRY_CHOICES)
     address_line = models.TextField()
