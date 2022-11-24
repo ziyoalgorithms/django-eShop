@@ -33,7 +33,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = UserAcc
-        fields = ['email', 'name', 'phone']
+        fields = ['email', 'name', 'phone', 'password', 'password2']
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -79,3 +79,6 @@ class RegistrationForm(forms.ModelForm):
         self.fields['password2'].widget.attrs.update(
             {'class': 'col-lg-12 col-md-6', 'placeholder': 'Repeat password'}
         )
+
+        for field, _ in self.fields.items():
+            _.label = ""

@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Assalomu alaykum {{ user.profile.first_name }} {{ user.profile.last_name }}
+
+Akkauntingiz muvaffaqqiyatli yaratildi, akkauntingizni faollashtirish uchun quyidagi linkni bosing.
+
+http://{{ domain }}{% url 'user:activate' uidb64=uid token=token %}
+
+{% endautoescape %}
