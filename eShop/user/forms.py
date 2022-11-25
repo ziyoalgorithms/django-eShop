@@ -82,3 +82,16 @@ class RegistrationForm(forms.ModelForm):
 
         for field, _ in self.fields.items():
             _.label = ""
+
+
+class UserLoginForm(forms.ModelForm):
+    class Meta:
+        model = UserAcc
+
+    username = forms.CharField(label="", widget=forms.TextInput(attrs={
+        'class': 'col-lg-12 col-md-6', 'placeholder': 'Email, telefon raqam yoki nikingizni kiriting'
+    }))
+
+    password = forms.CharField(label='', widget=forms.PasswordInput(attrs={
+        'class': 'col-lg-12 col-md-6', 'placeholder': 'Parolni kiriting'
+    }))
