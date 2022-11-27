@@ -87,9 +87,10 @@ class RegistrationForm(forms.ModelForm):
 class UserLoginForm(forms.ModelForm):
     class Meta:
         model = UserAcc
+        fields = ['email', 'password']
 
-    username = forms.CharField(label="", widget=forms.TextInput(attrs={
-        'class': 'col-lg-12 col-md-6', 'placeholder': 'Email, telefon raqam yoki nikingizni kiriting'
+    email = forms.CharField(label="", widget=forms.TextInput(attrs={
+        'class': 'col-lg-12 col-md-6', 'placeholder': 'Emailingizni kiriting'
     }))
 
     password = forms.CharField(label='', widget=forms.PasswordInput(attrs={

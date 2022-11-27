@@ -33,7 +33,13 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'user.UserAcc'
-AUTHENTICATION_BACKENDS = ('user.backends.MultipleUsernameBackend')
+# AUTHENTICATION_BACKENDS = (
+#     'user.backends.MultipleUsernameBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
+LOGIN_URL = 'users/login/'
+LOGIN_REDIRECT_URL = '/'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
