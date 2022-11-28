@@ -1,6 +1,6 @@
 {% extends './user_base.html' %}
 {% load static %}
-{% block title %}Ro'yhatdan o'tish{% endblock %}
+{% block title %}Kirish{% endblock %}
 
 {% block content %}
 <div class="contact-form spad">
@@ -18,7 +18,7 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="hidden" name="next", value="{{ next }}">
-                    <button type="submit" class="site-btn" value="Log-in">Kirish</button>
+                    <button type="submit" class="site-btn">Kirish</button>
                 </form>
             </div>
         </div>

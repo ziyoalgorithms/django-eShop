@@ -52,22 +52,23 @@ def account_activate(request, uidb64, token):
 
 def login_user(request):
 
-    form = UserLoginForm()
-    next = request.GET['next'] if 'next' in request.GET.keys() else ''
-    if request.method == 'POST':
-        login_form = UserLoginForm(data=request.POST)
-        if login_form.is_valid():
-            email = login_form.cleaned_data['email']
-            password = login_form.cleaned_data['password']
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-    else:
-        return redirect('user:login')
+    login_form = UserLoginForm(data=request.POST or None)
+
+    next = request.GET['next'] if 'next' in request.GET.keys() else '/'
+
+    if request.method == 'POST' and login_form.is_valid():
+
+        email = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(email=email, password=password)
+
+        if user and user.is_active:
+            login(request, user)
+            return HttpResponseRedirect(next)
 
     context = {
-        'form': form,
+        'form': login_form,
         'next': next,
     }
 

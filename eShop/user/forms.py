@@ -1,5 +1,5 @@
 from django import forms
-
+from django.contrib.auth.forms import AuthenticationForm
 
 from user.models import UserAcc
 
@@ -84,15 +84,18 @@ class RegistrationForm(forms.ModelForm):
             _.label = ""
 
 
-class UserLoginForm(forms.ModelForm):
+class UserLoginForm(AuthenticationForm):
     class Meta:
         model = UserAcc
         fields = ['email', 'password']
 
-    email = forms.CharField(label="", widget=forms.TextInput(attrs={
-        'class': 'col-lg-12 col-md-6', 'placeholder': 'Emailingizni kiriting'
-    }))
-
-    password = forms.CharField(label='', widget=forms.PasswordInput(attrs={
-        'class': 'col-lg-12 col-md-6', 'placeholder': 'Parolni kiriting'
-    }))
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'placeholder': 'Emailingizni kiriting'
+        })
+        self.fields['password'].widget.attrs.update(
+            {'placeholder': 'Parolni kiriting'}
+        )
+        for field, _ in self.fields.items():
+            _.label = ''
