@@ -1,10 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 
-from user.models import UserAcc
+from user.models import UserAcc, UserAccProfile
 
 
-class RegistrationForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
 
     email = forms.EmailField(
         max_length=100,
@@ -98,4 +98,29 @@ class UserLoginForm(AuthenticationForm):
             {'placeholder': 'Parolni kiriting'}
         )
         for field, _ in self.fields.items():
+            _.label = ''
+
+
+class UserAccEditForm(UserChangeForm):
+    class Meta:
+        model = UserAcc
+        fields = ['email', 'name', 'phone']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field, _ in self.fields.items():
+            _.widget.attrs['class'] = 'col-lg-12 col-md-6'
+            _.label = ''
+
+
+class UserAccProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserAccProfile
+        fields = ['first_name', 'last_name',
+                  'gender', 'country', 'address_line']
+
+    def __init__(self, *args, **kwargs):
+        super(UserAccProfileEditForm, self).__init__(*args, **kwargs)
+        for field, _ in self.fields.items():
+            _.widget.attrs['class'] = 'col-lg-12 col-md-6'
             _.label = ''
