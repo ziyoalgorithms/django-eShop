@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 
 from user.models import UserAcc, UserAccProfile
+from user.models import GENDER_CHOICES, COUNTRY_CHOICES
 
 
 class RegistrationForm(UserCreationForm):
@@ -101,26 +102,53 @@ class UserLoginForm(AuthenticationForm):
             _.label = ''
 
 
-class UserAccEditForm(UserChangeForm):
+class UserEditForm(UserChangeForm):
     class Meta:
         model = UserAcc
         fields = ['email', 'name', 'phone']
 
+    email = forms.EmailField(
+        label="Elektron pochta manzili (o'zgartirib bo'lmaydi)")
+    name = forms.CharField(label='Username')
+    phone = forms.CharField(label='Telefon raqam')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update(
+            {'placeholder': 'Email', 'readonly': 'readonly'}
+        )
+        self.fields['name'].widget.attrs.update({
+            'placeholder': 'Username'
+        })
+        self.fields['phone'].widget.attrs.update({
+            'placeholder': 'Telefon raqam'
+        })
         for field, _ in self.fields.items():
             _.widget.attrs['class'] = 'col-lg-12 col-md-6'
-            _.label = ''
 
 
-class UserAccProfileEditForm(forms.ModelForm):
+class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserAccProfile
         fields = ['first_name', 'last_name',
                   'gender', 'country', 'address_line']
 
+    first_name = forms.CharField(label='Ism')
+    last_name = forms.CharField(label='Familiya')
+    gender = forms.ChoiceField(label='Jins', choices=GENDER_CHOICES)
+    country = forms.ChoiceField(label='Viloyat', choices=COUNTRY_CHOICES)
+    address_line = forms.CharField(label="Manzil")
+
     def __init__(self, *args, **kwargs):
-        super(UserAccProfileEditForm, self).__init__(*args, **kwargs)
+        super(UserProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({
+            'placeholder': 'Isminizni kiriting'
+        })
+        self.fields['last_name'].widget.attrs.update({
+            'placeholder': 'Familiyangizni kiriting'
+        })
+        self.fields['address_line'].widget.attrs.update({
+            'placeholder': "To'liq manzilni kiriting"
+        })
         for field, _ in self.fields.items():
             _.widget.attrs['class'] = 'col-lg-12 col-md-6'
-            _.label = ''

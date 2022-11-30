@@ -4,10 +4,17 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import login, logout, authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.decorators import login_required
+
 from django.contrib import messages
 
 from user.models import UserAcc
-from user.forms import RegistrationForm, UserLoginForm
+from user.forms import (
+    RegistrationForm,
+    UserLoginForm,
+    UserEditForm,
+    UserProfileEditForm,
+)
 from user.token import account_activation_token
 
 
@@ -78,3 +85,33 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+
+@login_required
+def edit_user(request):
+
+    if request.method == 'POST':
+        edit_form = UserEditForm(
+            request.POST,
+            instance=request.user
+        )
+        user_profile_form = (
+            request.POST,
+            request.user.profile
+        )
+
+        if edit_form.is_valid() and user_profile_form.is_valid():
+            edit_form.save()
+            user_profile_form.save()
+            return HttpResponseRedirect('user:edit')
+
+    else:
+        edit_form = UserEditForm(instance=request.user)
+        user_profile_form = UserProfileEditForm(instance=request.user.profile)
+
+    context = {
+        'edit_form': edit_form,
+        'user_profile_form': user_profile_form,
+    }
+
+    return render(request, 'user/user_edit.html', context=context)

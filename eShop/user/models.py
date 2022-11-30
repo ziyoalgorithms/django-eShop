@@ -56,27 +56,28 @@ class UserAcc(AbstractBaseUser, PermissionsMixin):
         )
 
 
+GENDER_CHOICES = (
+    ('ERKAK', 'Erkak'),
+    ('AYOL', 'Ayol')
+)
+
+COUNTRY_CHOICES = (
+    ('SAMARQAND', 'Samarqand'),
+    ('JIZZAH', 'Jizzah'),
+    ('SURXONDARYO', 'Surxondaryo'),
+    ('QASHQADARYO', 'Qashqadaryo'),
+    ('SIRDARYO', 'Sirdaryo'),
+    ('TOSHKENT', 'Toshkent'),
+    ('NAVOIY', 'Navoiy'),
+    ('NAMANGAN', 'Namangan'),
+    ('ANDIJON', 'Andijon'),
+    ('FARGONA', "Farg'ona"),
+    ('XORAZM', 'Xorazm'),
+    ('NUKUS', 'Nukus'),
+)
+
+
 class UserAccProfile(models.Model):
-
-    GENDER_CHOICES = (
-        ('ERKAK', 'Erkak'),
-        ('AYOL', 'Ayol')
-    )
-
-    COUNTRY_CHOICES = (
-        ('SAMARQAND', 'Samarqand'),
-        ('JIZZAH', 'Jizzah'),
-        ('SURXONDARYO', 'Surxondaryo'),
-        ('QASHQADARYO', 'Qashqadaryo'),
-        ('SIRDARYO', 'Sirdaryo'),
-        ('TOSHKENT', 'Toshkent'),
-        ('NAVOIY', 'Navoiy'),
-        ('NAMANGAN', 'Namangan'),
-        ('ANDIJON', 'Andijon'),
-        ('FARGONA', "Farg'ona"),
-        ('XORAZM', 'Xorazm'),
-        ('NUKUS', 'Nukus'),
-    )
 
     user = models.OneToOneField(
         UserAcc,
