@@ -102,7 +102,7 @@ class UserLoginForm(AuthenticationForm):
             _.label = ''
 
 
-class UserEditForm(UserChangeForm):
+class UserEditForm(forms.ModelForm):
     class Meta:
         model = UserAcc
         fields = ['email', 'name', 'phone']

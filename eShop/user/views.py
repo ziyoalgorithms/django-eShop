@@ -93,17 +93,20 @@ def edit_user(request):
     if request.method == 'POST':
         edit_form = UserEditForm(
             request.POST,
-            instance=request.user
+            instance=request.user,
         )
-        user_profile_form = (
+        user_profile_form = UserProfileEditForm(
             request.POST,
-            request.user.profile
+            instance=request.user.profile,
         )
+        print(edit_form.is_valid())
+        print(type(user_profile_form))
 
         if edit_form.is_valid() and user_profile_form.is_valid():
             edit_form.save()
             user_profile_form.save()
-            return HttpResponseRedirect('user:edit')
+            messages.success(request, "Ma'lumotlaringiz tahrirlandi!")
+            return HttpResponseRedirect('/users/dashboard/')
 
     else:
         edit_form = UserEditForm(instance=request.user)
@@ -115,3 +118,7 @@ def edit_user(request):
     }
 
     return render(request, 'user/user_edit.html', context=context)
+
+
+def dashboard(request):
+    return render(request, 'user/dashboard.html')
