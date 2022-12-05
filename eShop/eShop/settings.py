@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'main',
     'product',
     'user',
+    'basket',
 ]
 
 AUTH_USER_MODEL = 'user.UserAcc'
@@ -40,6 +41,7 @@ AUTH_USER_MODEL = 'user.UserAcc'
 LOGIN_URL = 'users/login/'
 LOGIN_REDIRECT_URL = '/'
 
+BASKET_SESSION_ID = 'basket'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.categories_list',
+                'basket.context_processors.basket'
             ],
         },
     },
