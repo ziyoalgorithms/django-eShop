@@ -82,7 +82,9 @@
                                                 {{ item.total_price }}
                                             </td>
                                             <td class="shoping__cart__item__close">
-                                                <span class="icon_close"></span>
+                                                <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-outline-secondary btn-sm delete-button">
+                                                    <span class="icon_close"></span>
+                                                </button>
                                             </td>
                                         </tr>
                                     {% endwith %}
@@ -104,7 +106,7 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
+                            <li>Subtotal <span>{{ basket.get_total_price }} sum</span></li>
                             <li>Total <span>$454.98</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
@@ -113,6 +115,27 @@
             </div>
         </div>
     </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+    <script>
+        $(document).on('click', '.delete-button', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "basket:basket_delete" %}',
+                data: {
+                    productid: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'post'
+                },
+                success: function (json) {
+                },
+                error: function (xhr, errmsg, err) {}
+            });
+        });
+
+    </script>
+
     <!-- Shoping Cart Section End -->
 
 {% endblock %}
