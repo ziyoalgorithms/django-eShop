@@ -54,19 +54,23 @@
                             <thead>
                                 <tr>
                                     <th class="shoping__product">Products</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Taom:</th>
+                                    <th>Soni:</th>
+                                    <th>Narx:</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for item in basket %}
                                     {% with product=item.product %}
-                                        <tr>
+                                        <tr class="product-item" id="product-id" data-index="{{ product.id }}">
                                             <td class="shoping__cart__item">
                                                 <img src="{{ product.images.all.first.image }}" alt="">
-                                                <h5>{{ product.name }}</h5>
+                                                <h5>
+                                                    <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
+                                                        {{ product.name }}
+                                                    </a>
+                                                </h5>
                                             </td>
                                             <td class="shoping__cart__price">
                                                 {{ product.price }} sum
@@ -74,12 +78,20 @@
                                             <td class="shoping__cart__quantity">
                                                 <div class="quantity">
                                                     <div class="pro-qty">
-                                                        <input type="text" value="{{ item.qty }}">
+                                                        <input type="text" id="product-{{ product.id }}" value="{{ item.qty }}">
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="shoping__cart__total">
                                                 {{ item.total_price }}
+                                            </td>
+                                            <td>
+                                                <button id="update-button" data-index="{{ product.id }}" class="btn btn-primary btn-sm update-button">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                                    </svg>
+                                                </button>
                                             </td>
                                             <td class="shoping__cart__item__close">
                                                 <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-outline-secondary btn-sm delete-button">
@@ -95,19 +107,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
-                    </div>
-                </div>
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
-                        <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>{{ basket.get_total_price }} sum</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Jami: <span id="total-price">{{ basket.get_total_price }} sum</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
@@ -118,8 +121,10 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
     <script>
+        // Delete item
         $(document).on('click', '.delete-button', function (e) {
             e.preventDefault();
+            let prodid = $(this).data('index');
             $.ajax({
                 type: 'POST',
                 url: '{% url "basket:basket_delete" %}',
@@ -129,6 +134,31 @@
                     action: 'post'
                 },
                 success: function (json) {
+                    $('.product-item[data-index="' + prodid + '"]').remove();
+                    document.querySelector('#basket-qty').innerHTML = json.qty;
+                    document.querySelector('#total-price').innerHTML = json.subtotal;
+                },
+                error: function (xhr, errmsg, err) {}
+            });
+        });
+
+
+        // Update item
+        $(document).on('click', '.update-button', function (e) {
+            e.preventDefault();
+            let prodid = $(this).data('index');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "basket:basket_update" %}',
+                data: {
+                    productid: $(this).data('index'),
+                    productqty: document.querySelector(`#product-${prodid}`).value,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    document.querySelector('#basket-qty').innerHTML = json.qty;
+                    document.querySelector('#total-price').innerHTML = json.subtotal + ' sum';
                 },
                 error: function (xhr, errmsg, err) {}
             });
