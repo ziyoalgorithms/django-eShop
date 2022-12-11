@@ -1,5 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+)
 
 from user.models import UserAcc, UserAccProfile
 from user.models import GENDER_CHOICES, COUNTRY_CHOICES
@@ -152,3 +157,37 @@ class UserProfileEditForm(forms.ModelForm):
         })
         for field, _ in self.fields.items():
             _.widget.attrs['class'] = 'col-lg-12 col-md-6'
+
+
+class PwdResetForm(PasswordResetForm):
+
+    email = forms.EmailField(
+        max_length=63, label='', widget=forms.TextInput(
+            attrs={'class': 'col-lg-12 col-md-6', 'placeholder': 'Email'}
+        )
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        u = UserAcc.objects.filter(email=email)
+        if not u:
+            raise forms.ValidationError('Afsuski biz bu emailni topa olmadik!')
+
+        return email
+
+
+class PwdResetConfirmForm(SetPasswordForm):
+
+    new_password1 = forms.CharField(
+        label='', min_length=8, max_length=31, widget=forms.PasswordInput(
+            attrs={'class': 'col-lg-12 col-md-6',
+                   'placeholder': 'Yangi parolni kiriting'}
+        )
+    )
+
+    new_password2 = forms.CharField(
+        label='', min_length=8, max_length=31, widget=forms.PasswordInput(
+            attrs={'class': 'col-lg-12 col-md-6',
+                   'placeholder': 'Parolni tasdiqlang'}
+        )
+    )

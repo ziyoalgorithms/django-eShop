@@ -4,6 +4,7 @@ from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=120)
+    image = models.ImageField(upload_to='category_img/')
     slug = models.SlugField(max_length=130)
 
     def __str__(self):

@@ -1,0 +1,22 @@
+{% extends './user_base.html' %}
+{% block title %}Kirish{% endblock %}
+
+{% block content %}
+
+<div class="contact-form spad">
+    <div class="container">
+        <div class="row">
+            <div class="p-4">
+                {% if 'email' in request.get_full_path %}
+                    <h3>Parolni tiklash linki elektron pochtangizga jo'natildi</h3>
+                {% endif %}
+                {% if 'complete' in request.get_full_path %}
+                    <h3>Parol qayta tiklandi</h3>
+                    <a href="{% url 'user:login' %}">Kirish</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
