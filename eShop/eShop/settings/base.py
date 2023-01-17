@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-96wc2l0fq!sj7p(wn3fs##ad@d7wd5e4t^lf*xmi*6c6sb+ja2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'product',
     'user',
     'basket',
+    'orders',
+    'like',
 ]
 
 AUTH_USER_MODEL = 'user.UserAcc'
@@ -42,6 +44,7 @@ LOGIN_URL = 'users/login/'
 LOGIN_REDIRECT_URL = '/'
 
 BASKET_SESSION_ID = 'basket'
+LIKE_SESSION_ID = 'like'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,7 +70,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.categories_list',
-                'basket.context_processors.basket'
+                'basket.context_processors.basket',
+                'like.context_processors.like',
             ],
         },
     },

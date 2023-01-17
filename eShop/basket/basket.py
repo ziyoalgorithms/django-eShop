@@ -57,5 +57,9 @@ class Basket():
 
         self.save()
 
+    def clear(self):
+        del self.session[settings.BASKET_SESSION_ID]
+        self.save()
+
     def save(self):
         self.session.modified = True

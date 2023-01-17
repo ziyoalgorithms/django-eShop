@@ -1,0 +1,31 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}Buyurtmalar ro'yhati{% endblock %}
+
+{% block content %}
+{% if object_list %}
+    <div class="checkout__order">
+        <h2 style="text-align: center;">Buyurtmalar ro'yhati</h2>
+    </div>
+        <section class="checkout">
+            <div class="container">
+                <div class="col-lg-10 col-md-6 mx-auto">
+                    <div class="checkout__order">
+                        <div class="checkout__order__products">Mahsulot(lar) <span>Jami</span></div>
+                        {% for object in object_list %}
+                            <ul>
+                                <li>{{ object.product }} <span>{{ object.price }} sum</span></li>
+                            </ul>
+                        {% endfor %}
+                        <div class="checkout__order__subtotal"><span></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% else %}
+        <div class="checkout__order">
+            <h4 style="text-align: center;">Sizda buyurtmalar mavjud emas!</h4>
+        </div>
+{% endif %}
+
+{% endblock %}

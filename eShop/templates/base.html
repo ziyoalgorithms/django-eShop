@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{$ static 'css/slicknav.min.css' $}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
 </head>
 
@@ -120,7 +120,7 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="{% url 'like:like_main' %}"><i class="fa fa-heart"></i> <span id="like-len">{{ like|length }}</span></a></li>
                             <li>
                                 <a href="{% url 'basket:basket_summary' %}"><i class="fa fa-shopping-bag"></i>
                                     <span id="basket-qty">
@@ -135,7 +135,6 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
                 </div>
             </div>
@@ -145,6 +144,20 @@
         </div>
     </header>
     <!-- Header Section End -->
+    <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto my-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" id="msg" role="alert">
+                      {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
 
     {% block content %}{% endblock %}
     
@@ -199,6 +212,14 @@
     <script src="{% static 'js/mixitup.min.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        setTimeout(function(){
+          if (document.querySelectorAll('#msg').length > 0){
+            document.querySelector('#msg').remove();
+          }
+        }, 3000)
+    </script>
 
 
 

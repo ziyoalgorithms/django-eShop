@@ -33,9 +33,9 @@
                             </div>
                         </div>
                         <button id="add-button" value="{{ object.id }}" class="primary-btn">SAVATGA QO'SHISH</button>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <a href="#" class="heart-icon" id="like" data-like="{{ object.id }}"><span class="icon_heart_alt"></span></a>
                         <ul>
-                            <li><b>Share on</b>
+                            <li><b>Ulashish</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
                                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -57,85 +57,64 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title related__product__title">
-                        <h2>Related Product</h2>
+                        <h2>O'xshash mahsulotlar</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa icon_heart_alt"></i></a></li>
-                                <li><a href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
-                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-                                    </svg>
-                                </a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
+                {% for product in random_products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="#" id="like" data-like="{{ product.id }}"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="#" id="basket" data-value="{{ product.id }}"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">{{ product.name }}</a></h6>
+                                <h5>{{ product.price }} sum</h5>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+
             </div>
         </div>
     </section>
     <!-- Related Product Section End -->
+    {% include '../latest_products.html' %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
     <script>
+        basket_links = document.querySelectorAll('#basket')
+        basket_links.forEach(basket_link => {
+            basket_link.addEventListener('click', e => {
+                if ('{{ user }}' == 'AnonymousUser') {
+                    location.href = '{% url "user:login" %}'
+                }
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'basket:basket_add' %}",
+                    data: {
+                        productid: basket_link.dataset.value,
+                        productqty: '1',
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post',
+                    },
+                    success: (json) => {
+                        document.querySelector('#basket-qty').innerHTML = json.qty
+                    },
+                    error: function (xhr, errmsg, err) {},
+                })
+            })
+        })
+
         $(document).on('click', '#add-button', function (e) {
+            if ('{{ user }}' == 'AnonymousUser') {
+                location.href = '{% url "user:login" %}'
+            }
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -150,6 +129,33 @@
                     document.querySelector('#basket-qty').innerHTML = json.qty
                 },
                 error: function (xhr, errmsg, err) {}
+            });
+        });
+        
+        let like_links = document.querySelectorAll('#like');
+        like_links.forEach(like_link => {
+            like_link.addEventListener('click', function (e) {
+                if ('{{ user }}' == 'AnonymousUser') {
+                    location.href = '{% url "user:login" %}'
+                }
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'like:like_add' %}",
+                    data: {
+                        productid: like_link.dataset.like,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post',
+                    },
+                    success: function (json) {
+                        document.querySelector('#like-len').innerHTML = json.like_len
+                    },
+                    error: function (xhr, errmsg, err) {
+                        console.log(xhr);
+                        console.log(errmsg);
+                        console.log(err);
+                    },
+                })
             });
         });
 

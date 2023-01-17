@@ -44,80 +44,87 @@
     </section>
     <!-- Hero Section End -->
 
-    <!-- Shoping Cart Section Begin -->
-    <section class="shoping-cart spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="shoping__product">Products</th>
-                                    <th>Taom:</th>
-                                    <th>Soni:</th>
-                                    <th>Narx:</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in basket %}
-                                    {% with product=item.product %}
-                                        <tr class="product-item" id="product-id" data-index="{{ product.id }}">
-                                            <td class="shoping__cart__item">
-                                                <img src="{{ product.images.all.first.image }}" alt="">
-                                                <h5>
-                                                    <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
-                                                        {{ product.name }}
-                                                    </a>
-                                                </h5>
-                                            </td>
-                                            <td class="shoping__cart__price">
-                                                {{ product.price }} sum
-                                            </td>
-                                            <td class="shoping__cart__quantity">
-                                                <div class="quantity">
-                                                    <div class="pro-qty">
-                                                        <input type="text" id="product-{{ product.id }}" value="{{ item.qty }}">
+    {% if basket %}
+        <!-- Shoping Cart Section Begin -->
+        <section class="shoping-cart spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="shoping__cart__table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="shoping__product">Mahsulotlar</th>
+                                        <th>Mahsulot:</th>
+                                        <th>Soni:</th>
+                                        <th>Narx:</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in basket %}
+                                        {% with product=item.product %}
+                                            <tr class="product-item" id="product-id" data-index="{{ product.id }}">
+                                                <td class="shoping__cart__item">
+                                                    <img src="{{ product.images.all.first.image }}" alt="">
+                                                    <h5>
+                                                        <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
+                                                            {{ product.name }}
+                                                        </a>
+                                                    </h5>
+                                                </td>
+                                                <td class="shoping__cart__price">
+                                                    {{ product.price }} sum
+                                                </td>
+                                                <td class="shoping__cart__quantity">
+                                                    <div class="quantity">
+                                                        <div class="pro-qty">
+                                                            <input type="text" id="product-{{ product.id }}" value="{{ item.qty }}">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="shoping__cart__total">
-                                                {{ item.total_price }}
-                                            </td>
-                                            <td>
-                                                <button id="update-button" data-index="{{ product.id }}" class="btn btn-primary btn-sm update-button">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                            <td class="shoping__cart__item__close">
-                                                <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-outline-secondary btn-sm delete-button">
-                                                    <span class="icon_close"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                                </td>
+                                                <td class="shoping__cart__total">
+                                                    {{ item.total_price }}
+                                                </td>
+                                                <td>
+                                                    <button id="update-button" data-index="{{ product.id }}" class="btn btn-primary btn-sm update-button">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                                <td class="shoping__cart__item__close">
+                                                    <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-outline-secondary btn-sm delete-button">
+                                                        <span class="icon_close"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endwith %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="shoping__checkout">
+                            <ul>
+                                <li>Jami: <span id="total-price">{{ basket.get_total_price }} sum</span></li>
+                            </ul>
+                            <a href="{% url 'orders:order_create' %}" class="primary-btn">BUYURTMA BERISH</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="shoping__checkout">
-                        <ul>
-                            <li>Jami: <span id="total-price">{{ basket.get_total_price }} sum</span></li>
-                        </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
-                    </div>
-                </div>
-            </div>
+        </section>
+    {% else %}
+        <div class="checkout">
+            <h2 style="text-align: center;">Savatingiz bo'sh!</h2>
         </div>
-    </section>
+    {% endif %}
+    {% include '../latest_products.html' %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
     <script>

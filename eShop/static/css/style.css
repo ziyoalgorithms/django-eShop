@@ -1140,7 +1140,7 @@ ol {
 	font-size: 16px;
 	color: #dd2222;
 	font-weight: 700;
-	max-width: 20%;
+	max-width: 30%;
 	border: none;
 	display: inline-block;
 }
@@ -1469,10 +1469,12 @@ ol {
 	color: #1c1c1c;
 	font-weight: 700;
 	cursor: pointer;
+	text-align: center;
 }
 
 .filter__sort .nice-select span {
 	color: #1c1c1c;
+	text-align: center;
 }
 
 .filter__sort .nice-select:after {

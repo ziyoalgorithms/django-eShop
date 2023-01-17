@@ -5,6 +5,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import login, logout, authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 from django.contrib import messages
 
@@ -99,8 +101,6 @@ def edit_user(request):
             request.POST,
             instance=request.user.profile,
         )
-        print(edit_form.is_valid())
-        print(type(user_profile_form))
 
         if edit_form.is_valid() and user_profile_form.is_valid():
             edit_form.save()
@@ -120,5 +120,16 @@ def edit_user(request):
     return render(request, 'user/user_edit.html', context=context)
 
 
+@login_required
 def dashboard(request):
     return render(request, 'user/dashboard.html')
+
+
+@login_required
+def user_delete(request):
+    user = UserAcc.objects.get(email=request.user)
+    user.is_active = False
+    user.save()
+    logout(request)
+    messages.success(request, "Akkauntingiz o'chirildi")
+    return redirect('/')

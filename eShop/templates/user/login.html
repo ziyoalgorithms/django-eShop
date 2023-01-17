@@ -3,6 +3,34 @@
 {% block title %}Kirish{% endblock %}
 
 {% block content %}
+<script>
+    if ('{{ user }}' != 'AnonymousUser') {
+        window.location = '/'
+    }
+</script>
+
+<style>
+    .my-style {
+        text-align: center;
+    }
+    a:link {
+        text-align: center;
+        text-decoration: none;
+    }
+
+    a:visited {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:active {
+      text-decoration: underline;
+    }
+</style>
+
 <div class="contact-form spad">
     <div class="container">
         <div class="row">
@@ -18,8 +46,13 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="hidden" name="next", value="{{ next }}">
-                    <button type="submit" class="site-btn">Kirish</button>
+                    <div class="my-style">
+                        <button type="submit" class="site-btn">Kirish</button>
+                    </div>
                 </form>
+                <a href="{% url 'user:registration' %}" class="">
+                    Ro'yhatdan o'tish
+                </a>
             </div>
         </div>
     </div>

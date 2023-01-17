@@ -33,4 +33,5 @@ urlpatterns = [
     path('password_reset_complete/', TemplateView.as_view(
         template_name='user/reset_status.html'
     ), name='password_reset_complete'),
+    path('user_delete/', views.user_delete, name='user_delete'),
 ]

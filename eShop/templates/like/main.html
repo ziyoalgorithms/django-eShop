@@ -1,0 +1,142 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}Like{% endblock %}
+
+{% block content %}
+
+  <!-- Hero Section Begin -->
+  <section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <span>Barcha kategoriyalar</span>
+                    </div>
+                    <ul>
+                        {% for category in categories %}
+                            <li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <input type="text" placeholder="Qidirish">
+                            <button type="submit" class="site-btn">SEARCH</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>+99899000000</h5>
+                            <span>24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+{% if like %}
+    <!-- Shoping Cart Section Begin -->
+    <h2 class="shoping__product" id="info" style="text-align: center;">Saralangan mahsulotlar</h2>
+    <section class="shoping-cart spad">
+        <div class="container" id="cleaned-div">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Mahsulotlar</th>
+                                    <th>Narx:</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in like %}
+                                    {% with product=item.product %}
+                                        <tr class="product-item" id="product-id" data-index="{{ product.id }}">
+                                            <td class="shoping__cart__item">
+                                                <img src="{{ product.images.all.first.image }}" alt="">
+                                                <h5>
+                                                    <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
+                                                        {{ product.name }}
+                                                    </a>
+                                                </h5>
+                                            </td>
+                                            <td class="shoping__cart__price">
+                                                {{ product.price }} sum
+                                            </td>
+                                            <td class="shoping__cart__item__close">
+                                                <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-outline-secondary btn-sm delete-button">
+                                                    <span class="icon_close"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endwith %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="like-clear" class="btn btn-danger">BARCHASINI O'CHIRISH</button>
+                </div>
+            </div>
+        </div>
+    </section>
+{% else %}
+    <div class="checkout">
+        <h2 style="text-align: center;">Sizda saralangan mahsulotlar mavjud emas!</h2>
+    </div>
+{% endif %}
+{% include '../latest_products.html' %}
+
+<script>
+    let btns = document.querySelectorAll('#delete-button');
+    btns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault()
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'like:like_delete' %}",
+                data: {
+                    productid: btn.dataset.index,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    $('.product-item[data-index="' + btn.dataset.index + '"]').remove();
+                    document.querySelector('#like-len').innerHTML = json.like_len;
+                },
+                error: function (xhr, errmsg, err) {},
+            })
+        })        
+    });
+
+    document.querySelector('#like-clear').addEventListener('click', function (e) {
+        e.preventDefault()
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'like:like_clear' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post',
+            },
+            success: () => {
+                document.querySelector('#cleaned-div').remove();
+                document.querySelector('#like-len').innerHTML = 0;
+                document.querySelector('#info').innerHTML = 'Sizda saralangan mahsulotlar mavjud emas!'
+            },
+            error: function (xhr, errmsg, err) {},
+        })
+    })
+</script>
+
+{% endblock %}
