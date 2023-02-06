@@ -48,7 +48,14 @@ def basket_update(request):
         product_qty = int(request.POST.get('productqty'))
         basket.update(product=product_id, qty=product_qty)
 
+        product = get_object_or_404(Product, id=product_id)
+        p_total_price = product.price * product_qty
+
         basketqty = basket.__len__()
         baskettotal = basket.get_total_price()
 
-        return JsonResponse({'qty': basketqty, 'subtotal': baskettotal})
+        return JsonResponse({
+            'qty': basketqty,
+            'subtotal': baskettotal,
+            'item_total_price': p_total_price,
+        })

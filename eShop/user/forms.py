@@ -17,29 +17,29 @@ class RegistrationForm(UserCreationForm):
         error_messages={
             'required': 'Emailingizni kiritishingiz kerak!'
         },
-        widget=forms.EmailInput
+        widget=forms.EmailInput()
     )
     name = forms.CharField(
         max_length=30,
         error_messages={
             'required': 'Username kiritishingiz kerak!'
         },
-        widget=forms.TextInput
+        widget=forms.TextInput()
     )
     phone = forms.CharField(
         max_length=13,
         error_messages={
             'required': 'Telefon raqamingizni kiritishingiz kerak!'
         },
-        widget=forms.TextInput
+        widget=forms.TextInput()
     )
 
-    password = forms.CharField(widget=forms.PasswordInput)
-    password2 = forms.CharField(widget=forms.PasswordInput)
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = UserAcc
-        fields = ['email', 'name', 'phone', 'password', 'password2']
+        fields = ['email', 'name', 'phone', 'password1', 'password2']
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -64,7 +64,7 @@ class RegistrationForm(UserCreationForm):
 
     def clena_password2(self):
         cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
+        if cd['password1'] != cd['password2']:
             raise forms.ValidationError("Parollar bir biriga mos emas!")
         return cd['password2']
 
@@ -79,7 +79,7 @@ class RegistrationForm(UserCreationForm):
         self.fields['phone'].widget.attrs.update(
             {'class': 'col-lg-12 col-md-6', 'placeholder': 'Phone'}
         )
-        self.fields['password'].widget.attrs.update(
+        self.fields['password1'].widget.attrs.update(
             {'class': 'col-lg-12 col-md-6', 'placeholder': 'Password'}
         )
         self.fields['password2'].widget.attrs.update(
@@ -135,11 +135,12 @@ class UserEditForm(forms.ModelForm):
 class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserAccProfile
-        fields = ['first_name', 'last_name',
+        fields = ['first_name', 'last_name', 'image',
                   'gender', 'country', 'address_line']
 
     first_name = forms.CharField(label='Ism')
     last_name = forms.CharField(label='Familiya')
+    image = forms.ImageField(label='Rasm', widget=forms.FileInput())
     gender = forms.ChoiceField(label='Jins', choices=GENDER_CHOICES)
     country = forms.ChoiceField(label='Viloyat', choices=COUNTRY_CHOICES)
     address_line = forms.CharField(label="Manzil")
@@ -152,9 +153,13 @@ class UserProfileEditForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs.update({
             'placeholder': 'Familiyangizni kiriting'
         })
+        self.fields['image'].widget.attrs.update({
+            'placeholder': "Rasmingini yuklang!"
+        })
         self.fields['address_line'].widget.attrs.update({
             'placeholder': "To'liq manzilni kiriting"
         })
+
         for field, _ in self.fields.items():
             _.widget.attrs['class'] = 'col-lg-12 col-md-6'
 

@@ -101,19 +101,18 @@
                 <div class="col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
-                            <li><a href="./shop-grid.html">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
-                            <li><a href="#">Login</a></li>
+                            <li class="active"><a href="/">Bosh sahifa</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'orders:orders_list' %}">Buyurtmalar</a></li>
+                                <li><a href="{% url 'user:dashboard' %}">Akkaunt</a></li>
+                                <li><a href="{% url 'user:logout' %}">Chiqish</a></li>
+                            {% else %}
+                                <li><a href="{% url 'user:login' %}">Kirish</a>
+                                    <ul class="header__menu__dropdown">
+                                        <li><a href="{% url 'user:registration' %}">Ro'yhatdan o'tish</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
@@ -157,6 +156,46 @@
           </div>
         </div>
       </div>
+
+       <!-- Hero Section Begin -->
+    <section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <span>Barcha kategoriyalar</span>
+                        </div>
+                        <ul>
+                            {% for category in categories %}
+                                <li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            <form action="{% url 'product:search' %}" method="get">
+                                <input type="text" placeholder="Qidirish" name="q" id="q">
+                                <button type="submit" class="site-btn">Qidirish</button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+998990714250</h5>
+                                <span>24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
 
 
     {% block content %}{% endblock %}

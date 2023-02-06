@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.core.paginator import Paginator
-from django.db.models import Q
 import random
 
 from main.models import Category, Product, Image
@@ -51,3 +50,26 @@ class ProductDetailView(DetailView):
             context['random_products'] = []
         context['title'] = 'Product Detail'
         return context
+
+
+def search_product(request):
+    query_name = request.GET.get('q', None)
+    if query_name:
+        products = Product.objects.filter(
+            name__contains=query_name
+        )
+
+        images = []
+        for product in products:
+            images.append(Image.objects.filter(product=product)[0])
+        list = Paginator(products, 12)
+        page_number = request.POST.get('page')
+        page_obj = list.get_page(page_number)
+
+        context = {
+            'items': zip(page_obj, images),
+            'page_obj': page_obj,
+        }
+        return render(request, 'product/search_products.html', context)
+
+    return render(request, 'product/search_products.html')

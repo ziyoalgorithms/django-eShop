@@ -40,7 +40,9 @@ class Basket():
             yield item
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+        return sum(
+            Decimal(item['price']) * item['qty'] for item in self.basket.values()
+        )
 
     def delete(self, product):
         product_id = str(product)

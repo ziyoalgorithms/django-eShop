@@ -4,7 +4,6 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
-from django.core.mail import send_mail
 
 
 class UserManager(BaseUserManager):
@@ -46,15 +45,6 @@ class UserAcc(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    def email_to_user(self, subject, message):
-        send_mail(
-            subject,
-            message,
-            'ziyodullokhonanvarov@gmail.com',
-            [self.email],
-            fail_silently=False,
-        )
-
 
 GENDER_CHOICES = (
     ('ERKAK', 'Erkak'),
@@ -87,6 +77,10 @@ class UserAccProfile(models.Model):
     )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    image = models.ImageField(
+        upload_to='users_images/',
+        default='users_images/default_user_image.png'
+    )
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES)
     country = models.CharField(max_length=12, choices=COUNTRY_CHOICES)
     address_line = models.TextField()

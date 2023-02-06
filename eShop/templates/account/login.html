@@ -1,5 +1,6 @@
 {% extends './user_base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block title %}Kirish{% endblock %}
 
 {% block content %}
@@ -50,11 +51,18 @@
                         <button type="submit" class="site-btn">Kirish</button>
                     </div>
                 </form>
-                <a href="{% url 'user:registration' %}" class="">
+                <a href="{% url 'user:pwd_reset' %}">
+                    Parolni tiklash
+                </a>
+                <a href="{% url 'user:registration' %}">
                     Ro'yhatdan o'tish
                 </a>
             </div>
         </div>
+    </div>
+    <div style="text-align: center;">
+        <h4>Ijtimoiy tarmoqlar orqali kirish</h4>
+        <a href="{% provider_login_url 'google' %}">Google orqali kirish</a>
     </div>
 </div>
 {% endblock %}

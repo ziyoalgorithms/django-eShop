@@ -1,14 +1,14 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.db import transaction
-from django.forms import inlineformset_factory
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from basket.basket import Basket
 from orders.models import Order, OrderItem
-from orders.forms import OrderForm, OrderItemForm
+from orders.forms import OrderForm
+from main.models import Product
 
 
 class OrderListView(ListView):
@@ -38,6 +38,10 @@ def order_create(request):
                         price=item['total_price'],
                         quantity=item['qty']
                     )
+                    product = get_object_or_404(Product, id=item['product'].id)
+                    with transaction.atomic():
+                        product.count_sold += 1
+                        product.save()
                 Basket(request).clear()
                 messages.success(request, 'Buyurtmangiz qabul qilindi!')
                 return HttpResponseRedirect(reverse('orders:orders_list'))

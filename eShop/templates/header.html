@@ -1,0 +1,60 @@
+{% load static %}
+ 
+ <!-- Header Section Begin -->
+  <header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="header__logo">
+                    <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="/">Bosh sahifa</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'orders:orders_list' %}">Buyurtmalar</a></li>
+                            <li><a href="#">Akkaunt</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'user:dashboard' %}">Ro'yhatdan o'tish</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'user:logout' %}">Chiqish</a></li>
+                        {% else %}
+                            <li><a href="{% url 'user:login' %}">Kirish</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'user:registration' %}">Ro'yhatdan o'tish</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="{% url 'like:like_main' %}"><i class="fa fa-heart"></i> <span id="like-len">{{ like|length }}</span></a></li>
+                        <li>
+                            <a href="{% url 'basket:basket_summary' %}"><i class="fa fa-shopping-bag"></i>
+                                <span id="basket-qty">
+                                    {% with total_qty=basket|length %}
+                                        {% if total_qty > 0 %}
+                                            {{ total_qty }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    {% endwith %}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->

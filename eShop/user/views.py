@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import (
+    render,
+    redirect,
+    HttpResponseRedirect,
+)
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import login, logout, authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-
 from django.contrib import messages
 
 from user.models import UserAcc
@@ -18,6 +19,7 @@ from user.forms import (
     UserProfileEditForm,
 )
 from user.token import account_activation_token
+from .services import send_mail_to_user
 
 
 def registration(request):
@@ -31,17 +33,18 @@ def registration(request):
             user = form.save()
             current_site = get_current_site(request)
             subject = 'Akkauntingizni faollashtiring'
-            message = render_to_string('user/account_activation_email.html', {
+            message = render_to_string('account/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user)
             })
-            user.email_to_user(subject=subject, message=message)
+            send_mail_to_user.delay(subject, message, user.email)
             messages.success(
                 request, "Tasdiqlovchi link elektron pochtangizga jo'natildi!")
+            return HttpResponseRedirect('main:home')
 
-    return render(request, 'user/registration.html', {'form': form})
+    return render(request, 'account/registration.html', {'form': form})
 
 
 def account_activate(request, uidb64, token):
@@ -56,7 +59,7 @@ def account_activate(request, uidb64, token):
         login(request, user)
         return redirect('/')
     else:
-        return render(request, 'user/activation_failed.html')
+        return render(request, 'account/activation_failed.html')
 
 
 def login_user(request):
@@ -81,7 +84,7 @@ def login_user(request):
         'next': next,
     }
 
-    return render(request, 'user/login.html', context=context)
+    return render(request, 'account/login.html', context=context)
 
 
 def logout_user(request):
@@ -95,10 +98,12 @@ def edit_user(request):
     if request.method == 'POST':
         edit_form = UserEditForm(
             request.POST,
+            request.FILES,
             instance=request.user,
         )
         user_profile_form = UserProfileEditForm(
             request.POST,
+            request.FILES,
             instance=request.user.profile,
         )
 
@@ -117,18 +122,19 @@ def edit_user(request):
         'user_profile_form': user_profile_form,
     }
 
-    return render(request, 'user/user_edit.html', context=context)
+    return render(request, 'account/user_edit.html', context=context)
 
 
 @login_required
 def dashboard(request):
-    return render(request, 'user/dashboard.html')
+    print(request.user.profile.image.url)
+    return render(request, 'account/dashboard.html')
 
 
 @login_required
 def user_delete(request):
     user = UserAcc.objects.get(email=request.user)
-    user.is_active = False
+    user.delete()
     user.save()
     logout(request)
     messages.success(request, "Akkauntingiz o'chirildi")
