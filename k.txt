@@ -1,5 +1,0 @@
-docker images                   imagelar ro'yhati
-docker ps                       hozir ishlab turgan konteynerlar
-docker ps -a                    hamma konteynerlar ro'yhati
-docker container ls             hozir ishlab turgan konteynerlar
-docker container -a             hamma konteynerlar ro'yhati
