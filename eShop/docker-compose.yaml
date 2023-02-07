@@ -18,7 +18,7 @@ services:
       - POSTGRES_USER=ziyodullokhon
       - POSTGRES_PASSWORD=ziyodullokhon
       - POSTGRES_HOST=db
-      - DJANGO_SECRET_KEY=django-insecure-96wc2l0fq!sj7p(wn3fs##ad@d7wd5e4t^lf*xmi*6c6sb+ja2
+      - DJANGO_SECRET_KEY=96wc2l0fq!sj7p(wn3fs##ad@d7wd5e4t^lf*xmi*6c6sb+ja2
       - DEBUG=1
   
   db:
